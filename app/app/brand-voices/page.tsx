@@ -15,7 +15,7 @@ export default async function Voices({ searchParams }: { searchParams: { error?:
       {data?.length ? <ul className="mb-8 space-y-3">{data.map((v) => (
         <li key={v.id} className="card flex items-start justify-between gap-4"><div><p className="font-medium">{v.name}</p><p className="text-sm text-mute">{v.description}</p>
           <p className="mt-1 text-xs text-mute">{v.tone_traits.join(" · ")}{v.avoid_words.length ? ` — avoids: ${v.avoid_words.join(", ")}` : ""}</p></div><DeleteForm table="brand_voices" id={v.id} /></li>))}</ul>
-        : <p className="mb-8 border border-dashed border-line p-6 text-sm text-mute">No voices yet. Describe how your brand sounds below.</p>}
+        : <p className="mb-8 border border-dashed border-line p-6 text-sm text-mute">No voices yet. Define the voice that sets you apart below.</p>}
       <form action={createVoice} className="card space-y-4"><h2 className="text-xl font-semibold">New voice</h2>
         <div><label className="label" htmlFor="name">Name</label><input id="name" name="name" required maxLength={80} className="input" placeholder="e.g. Company voice" /></div>
         <div><label className="label" htmlFor="description">Description</label><textarea id="description" name="description" rows={2} maxLength={1000} className="input" placeholder="Who are we when we write?" /></div>
