@@ -5,7 +5,6 @@ const nav = [
   { href: "/features", label: "Platform" },
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "Company" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -31,7 +30,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3">
           <div>
             <Logo />
-            <p className="mt-3 max-w-xs text-sm text-mute">An AI content studio for marketing teams that care how their brand sounds.</p>
+            <p className="mt-3 max-w-xs text-sm text-mute">An AI content studio for marketing teams that want to dominate their industry.</p>
           </div>
           <div className="text-sm">
             <p className="mb-2 font-medium">Product</p>
@@ -39,7 +38,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           </div>
           <div className="text-sm">
             <p className="mb-2 font-medium">Company</p>
-            <ul className="space-y-1 text-mute"><li><Link href="/about">About</Link></li><li><Link href="/contact">Contact</Link></li><li><Link href="/login">Log in</Link></li></ul>
+            <ul className="space-y-1 text-mute"><li><Link href="/about">About</Link></li><li><Link href="/login">Log in</Link></li></ul>
           </div>
         </div>
         <p className="border-t border-line py-4 text-center text-xs text-mute">© {new Date().getFullYear()} BrandQuill. Not affiliated with any other marketing AI vendor.</p>

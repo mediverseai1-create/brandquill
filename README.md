@@ -19,4 +19,4 @@ Import the repo, set every variable from `.env.example`, deploy. `SUPABASE_SERVI
 `npm run typecheck`, `npm test` (unit tests for brand check, plan logic, webhook signature), `npm run build`.
 
 ## Known limits
-Knowledge accepts pasted text or .txt/.md files (no PDF parsing). No team invitations yet (schema supports multiple members). Business plan is contact-sales.
+Knowledge accepts pasted text or .txt/.md files (no PDF parsing). No team invitations yet (schema supports multiple members). Business is a fixed-price plan sold through its own payment link.

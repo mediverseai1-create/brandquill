@@ -6,8 +6,8 @@ const display = Fraunces({ subsets: ["latin"], variable: "--font-display", weigh
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: { default: "BrandQuill — On-brand marketing content, at team speed", template: "%s | BrandQuill" },
-  description: "BrandQuill is an AI content studio that learns your brand voice, audiences and facts, then drafts campaigns your team can publish.",
+  title: { default: "BrandQuill — AI content studio to dominate your industry", template: "%s | BrandQuill" },
+  description: "BrandQuill is an AI content studio for marketing teams that want to dominate their industry, turning your positioning, audiences and facts into campaigns that win market share.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

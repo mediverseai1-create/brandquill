@@ -6,8 +6,9 @@ export const runtime = "nodejs";
 
 /**
  * Verified payment confirmation. Subscription state changes ONLY here (service role).
- * Payment Links must pass client_reference_id = workspace id (the Billing page appends it).
- * Events handled: checkout.session.completed, customer.subscription.updated/deleted.
+ * Workspace is matched by client_reference_id (added by the in-app Billing page), or,
+ * for links opened from the public pricing page, by the buyer's checkout email.
+ * Business is recognised by STRIPE_BUSINESS_PAYMENT_LINK_ID; anything else paid is Pro.
  */
 export async function POST(req: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -20,11 +21,25 @@ export async function POST(req: Request) {
   const obj = event.data?.object ?? {};
   const db = createServiceClient();
 
-  if (event.type === "checkout.session.completed" && obj.client_reference_id && obj.payment_status !== "unpaid") {
-    await db.from("subscriptions").update({
-      plan: "pro", status: "active", customer_ref: obj.customer ?? null, subscription_ref: obj.subscription ?? null,
-      updated_at: new Date().toISOString(),
-    }).eq("workspace_id", obj.client_reference_id);
+  if (event.type === "checkout.session.completed" && obj.payment_status !== "unpaid") {
+    let workspaceId: string | null = obj.client_reference_id ?? null;
+    if (!workspaceId) {
+      const email = (obj.customer_details?.email ?? obj.customer_email ?? "").toLowerCase();
+      if (email) {
+        const { data: profile } = await db.from("profiles").select("id").ilike("email", email).maybeSingle();
+        if (profile) {
+          const { data: m } = await db.from("workspace_members").select("workspace_id").eq("user_id", profile.id).eq("role", "owner").limit(1).maybeSingle();
+          workspaceId = m?.workspace_id ?? null;
+        }
+      }
+    }
+    if (workspaceId) {
+      const isBusiness = Boolean(process.env.STRIPE_BUSINESS_PAYMENT_LINK_ID) && obj.payment_link === process.env.STRIPE_BUSINESS_PAYMENT_LINK_ID;
+      await db.from("subscriptions").update({
+        plan: isBusiness ? "business" : "pro", status: "active", customer_ref: obj.customer ?? null, subscription_ref: obj.subscription ?? null,
+        updated_at: new Date().toISOString(),
+      }).eq("workspace_id", workspaceId);
+    }
   } else if (event.type === "customer.subscription.updated" || event.type === "customer.subscription.deleted") {
     const active = event.type === "customer.subscription.updated" && ["active", "trialing"].includes(obj.status);
     const status = active ? "active" : obj.status === "past_due" ? "past_due" : "canceled";

@@ -31,7 +31,8 @@ export function AuthForm({ mode }: { mode: Mode }) {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return setError("Backend not configured yet: set the Supabase environment variables.");
     setBusy(true);
     const supabase = createClient();
-    const origin = window.location.origin;
+    // Prefer the configured public site URL; fall back to the current origin.
+    const origin = (process.env.NEXT_PUBLIC_SITE_URL || window.location.origin).replace(/\/$/, "");
     try {
       if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });

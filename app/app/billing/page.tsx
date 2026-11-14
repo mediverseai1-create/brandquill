@@ -15,6 +15,7 @@ export default async function Billing({ searchParams }: { searchParams: { paid?:
   };
   const monthly = link(process.env.NEXT_PUBLIC_PAYMENT_LINK_PRO_MONTHLY);
   const yearly = link(process.env.NEXT_PUBLIC_PAYMENT_LINK_PRO_YEARLY);
+  const business = link(process.env.NEXT_PUBLIC_PAYMENT_LINK_BUSINESS);
   const portal = process.env.NEXT_PUBLIC_BILLING_PORTAL_URL;
   const isPro = plan === "pro" || plan === "business";
   return (
@@ -36,7 +37,13 @@ export default async function Billing({ searchParams }: { searchParams: { paid?:
         </div>
       )}
       {isPro && plan === "pro" && portal && <a className="btn-outline mt-6" href={portal}>Manage subscription</a>}
-      <p className="mt-6 text-sm text-mute">Need Business with unlimited usage? <Link className="underline" href="/contact">Contact sales</Link>.</p>
+      {plan !== "business" && (
+        <div className="card mt-6"><h2 className="text-xl font-semibold">Business plan</h2>
+          <p className="mt-1 text-sm text-mute">{PRICES.business ? `$${PRICES.business}/month. ` : ""}Unlimited generations, voices, audiences and knowledge.</p>
+          {business ? <a className="btn-primary mt-4" href={business}>Start Business plan</a>
+            : <p className="mt-4 border border-line bg-paper p-3 text-sm text-mute">Payment link not configured (NEXT_PUBLIC_PAYMENT_LINK_BUSINESS).</p>}
+        </div>
+      )}
     </div>
   );
 }

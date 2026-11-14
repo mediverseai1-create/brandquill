@@ -14,7 +14,8 @@ export const PLANS: Record<PlanId, PlanLimits> = {
   business: { name: "Business", monthlyGenerations: Infinity, brandVoices: Infinity, knowledgeItems: Infinity, audiences: Infinity },
 };
 
-export const PRICES = { proMonthly: 59, proYearly: 49 };
+const businessPrice = Number(process.env.NEXT_PUBLIC_BUSINESS_PRICE);
+export const PRICES = { proMonthly: 59, proYearly: 49, business: Number.isFinite(businessPrice) && businessPrice > 0 ? businessPrice : null as number | null };
 
 export interface SubscriptionRow {
   plan: PlanId;
