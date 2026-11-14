@@ -13,7 +13,7 @@ export class AIError extends Error {
 export async function generateJSON(system: string, prompt: string) {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new AIError("AI is not configured yet. Add GEMINI_API_KEY to the server environment.", 503);
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  const model = process.env.GEMINI_MODEL || "gemini-3.8-flash";
   const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
     method: "POST",
     headers: { "content-type": "application/json", "x-goog-api-key": key },
