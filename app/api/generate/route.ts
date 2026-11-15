@@ -39,11 +39,10 @@ export async function POST(req: Request) {
   const { data: sub } = await supabase.from("subscriptions").select("*").eq("workspace_id", workspaceId).maybeSingle();
   const plan = effectivePlan(sub as SubscriptionRow | null);
   const limits = limitsFor(plan);
-  if (plan === "none") return NextResponse.json({ error: "Your trial or subscription is not active. Upgrade on the Billing page.", code: "no_plan" }, { status: 402 });
   const { count } = await supabase.from("usage_events").select("id", { count: "exact", head: true })
     .eq("workspace_id", workspaceId).gte("created_at", startOfMonthUTC());
   if ((count ?? 0) >= limits.monthlyGenerations) {
-    return NextResponse.json({ error: "You have used all generations for this month. Upgrade for more.", code: "limit" }, { status: 402 });
+    return NextResponse.json({ error: "You have used all generations for this month on your plan. Upgrade for more.", code: "limit" }, { status: 402 });
   }
 
   // RLS guarantees these rows belong to the caller's workspace.

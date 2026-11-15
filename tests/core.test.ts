@@ -13,11 +13,11 @@ test("brandCheck flags avoided words", () => {
 test("brandCheck clean text scores 100 without sample", () => {
   assert.equal(brandCheck("Short clear words.", ["synergy"]).score, 100);
 });
-test("expired trial has no plan; active pro does", () => {
+test("expired trial and canceled sub fall back to free; active pro does", () => {
   const past = new Date(Date.now() - 1000).toISOString();
-  assert.equal(effectivePlan({ plan: "trial", status: "trialing", trial_ends_at: past, current_period_end: null, billing_interval: null }), "none");
+  assert.equal(effectivePlan({ plan: "trial", status: "trialing", trial_ends_at: past, current_period_end: null, billing_interval: null }), "free");
   assert.equal(effectivePlan({ plan: "pro", status: "active", trial_ends_at: null, current_period_end: null, billing_interval: "month" }), "pro");
-  assert.equal(effectivePlan({ plan: "pro", status: "canceled", trial_ends_at: null, current_period_end: null, billing_interval: "month" }), "none");
+  assert.equal(effectivePlan({ plan: "pro", status: "canceled", trial_ends_at: null, current_period_end: null, billing_interval: "month" }), "free");
 });
 test("stripe signature verification", () => {
   const body = '{"a":1}', secret = "whsec_test", t = 1_700_000_000;

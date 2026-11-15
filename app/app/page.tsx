@@ -23,7 +23,7 @@ export default async function Dashboard() {
   return (
     <div className="space-y-8">
       <div><h1 className="text-3xl font-semibold">Dashboard</h1></div>
-      {plan === "none" && <div className="border border-coral bg-coral/10 p-4 text-sm">Your trial or subscription is not active. <Link className="underline" href="/app/billing">Upgrade to keep generating.</Link></div>}
+      {plan === "free" && <div className="border border-line bg-sky-soft p-4 text-sm">You're on the Free plan. <Link className="underline" href="/app/billing">Upgrade for more generations, voices and knowledge.</Link></div>}
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="card"><p className="text-xs uppercase text-mute">Plan</p><p className="mt-1 font-display text-2xl">{limits.name}</p>
           {subscription?.status === "trialing" && subscription.trial_ends_at && <p className="text-xs text-mute">Trial ends {new Date(subscription.trial_ends_at).toLocaleDateString()}</p>}</div>
