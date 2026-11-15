@@ -14,8 +14,13 @@ export const PLANS: Record<PlanId, PlanLimits> = {
   business: { name: "Business", monthlyGenerations: Infinity, brandVoices: Infinity, knowledgeItems: Infinity, audiences: Infinity },
 };
 
-const businessPrice = Number(process.env.NEXT_PUBLIC_BUSINESS_PRICE);
-export const PRICES = { proMonthly: 59, proYearly: 49, business: Number.isFinite(businessPrice) && businessPrice > 0 ? businessPrice : null as number | null };
+export const PRICES = { pro: 57, business: 97 };
+
+/** Hosted Selar checkout pages. Override via env if the links change. */
+export const PAYMENT_LINKS = {
+  pro: process.env.NEXT_PUBLIC_PAYMENT_LINK_PRO || "https://selar.com/57plan?currency=USD",
+  business: process.env.NEXT_PUBLIC_PAYMENT_LINK_BUSINESS || "https://selar.com/97plan?currency=USD",
+};
 
 export interface SubscriptionRow {
   plan: PlanId;

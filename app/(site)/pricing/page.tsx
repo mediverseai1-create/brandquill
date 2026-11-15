@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
 import type { Metadata } from "next";
-import { PLANS, PRICES } from "@/lib/plans";
+import { PLANS, PRICES, PAYMENT_LINKS } from "@/lib/plans";
 
 export const metadata: Metadata = { title: "Pricing" };
 
@@ -13,7 +13,6 @@ const faqs = [
 ];
 
 export default function Pricing() {
-  const business = process.env.NEXT_PUBLIC_PAYMENT_LINK_BUSINESS;
   const pro = PLANS.pro;
   return (
     <>
@@ -24,8 +23,8 @@ export default function Pricing() {
       <section className="mx-auto grid max-w-4xl gap-6 px-4 py-16 md:grid-cols-2">
         <div className="card flex flex-col">
           <h2 className="text-2xl font-semibold">Pro</h2>
-          <p className="mt-3 font-display text-5xl font-semibold">${PRICES.proMonthly}<span className="text-base text-mute"> /month</span></p>
-          <p className="text-sm text-mute">or ${PRICES.proYearly}/month billed yearly</p>
+          <p className="mt-3 font-display text-5xl font-semibold">${PRICES.pro}<span className="text-base text-mute"> /month</span></p>
+          <p className="text-sm text-mute">Billed monthly</p>
           <ul className="mt-6 flex-1 space-y-2 text-sm">
             {[`${pro.monthlyGenerations} generations per month`, `${pro.brandVoices} brand voices`, `${pro.audiences} audiences`, `${pro.knowledgeItems} knowledge items`, "All 8 templates and saved library", "Brand-check scoring"].map((f) => (
               <li key={f} className="flex gap-2"><Check className="h-4 w-4 shrink-0 text-coral" aria-hidden />{f}</li>
@@ -36,16 +35,14 @@ export default function Pricing() {
         </div>
         <div className="card flex flex-col">
           <h2 className="text-2xl font-semibold">Business</h2>
-          <p className="mt-3 font-display text-5xl font-semibold">{PRICES.business ? <>${PRICES.business}<span className="text-base text-mute"> /month</span></> : "—"}</p>
-          <p className="text-sm text-mute">{PRICES.business ? "Billed monthly" : "Price not set yet"}</p>
+          <p className="mt-3 font-display text-5xl font-semibold">${PRICES.business}<span className="text-base text-mute"> /month</span></p>
+          <p className="text-sm text-mute">Billed monthly</p>
           <ul className="mt-6 flex-1 space-y-2 text-sm">
             {["Unlimited generations", "Unlimited voices, audiences and knowledge", "Everything in Pro", "Built for teams publishing at scale"].map((f) => (
               <li key={f} className="flex gap-2"><Check className="h-4 w-4 shrink-0 text-coral" aria-hidden />{f}</li>
             ))}
           </ul>
-          {business
-            ? <a href={business} className="btn-primary mt-8">Start Business plan</a>
-            : <span className="btn-primary mt-8 opacity-50" aria-disabled="true">Start Business plan</span>}
+          <a href={PAYMENT_LINKS.business} className="btn-primary mt-8">Start Business plan</a>
           <p className="mt-2 text-xs text-mute">Use the same email as your BrandQuill account so your plan activates automatically.</p>
         </div>
       </section>
